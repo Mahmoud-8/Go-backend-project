@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-        app := fiber.New() // Declare app here
+        app := fiber.New() 
 
         fmt.Println("Hello worlgfghd")
         log.Fatal(app.Listen(":4000"))
