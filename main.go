@@ -6,13 +6,34 @@ import (
         "github.com/gofiber/fiber/v2"
 )
 
+type Todo struct {
+ID  int  `json:"id"`
+Completed  bool  `json: "completed"`
+Body  string  `"json: "body"`
+}
+
 func main() {
+
         app := fiber.New() 
 
-        app.Get("/", func(c *fiber.Ctx) error {
-                return c. Status (200). JSON (fiber.Map{"msg": "hello world"})
-                })
+      todos := []Todo{}
 
-        fmt.Println("Hello worlgfghd")
+        app.Get("/", func(c *fiber.Ctx) error {
+                return c.Status(200).JSON(fiber.Map{"msg": "hello world"})
+        })
+     
+app.Post("/api/todos", func(c *fiber.Ctx) error {
+        todo := &Todo{}
+
+        if err := c.BodyParser(todo); err != nil {
+                return err
+        }
+
+        todos = append(todos, *todo)
+        return c.Status(201).JSON(todo)
+})
+
+        fmt.Println("Hello world")
+
         log.Fatal(app.Listen(":4000"))
 }
