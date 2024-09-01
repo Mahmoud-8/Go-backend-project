@@ -30,21 +30,28 @@ app.Post("/api/todos", func(c *fiber.Ctx) error {
         }
 
         if todo.Body == "" {
-                return c.Status(400).JSON(fiber.Map{"error": "Todo body isrequired"})
+                return c.Status(400).JSON(fiber.Map{"error": "Todo body is required"})
         }
         todo.ID = len(todos) + 1
-        todos = append(todos, *todo)
-        eturn c.Status(201).JSON(todo)
-})
- log.Fetal(app.Listen(":4000"))
-}
-
-
         todos = append(todos, *todo)
         return c.Status(201).JSON(todo)
 })
 
-        fmt.Println("Hello world")
 
-        log.Fatal(app.Listen(":4000"))
+//update a todo
+app.Patch("/api/todos/:id", func(c *fiber.Ctx) error {
+        id := c.Params("id")
+
+        for i, todo := range todos {
+                if fmt.Sprint(todo.ID) == id {
+                        todos[i].Completed = true
+                        return c.Status(200).JSON(todos[i])
+
+
+                }
+        }
+        return c.Status(404).JSON(fiber.Map{"error": "Todo not found"})
+})
+                        
+ log.Fatal(app.Listen(":4000"))
 }
