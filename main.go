@@ -18,8 +18,8 @@ func main() {
 
       todos := []Todo{}
 
-        app.Get("/", func(c *fiber.Ctx) error {
-                return c.Status(200).JSON(fiber.Map{"msg": "hello world"})
+        app.Get("/api/todos", func(c *fiber.Ctx) error {
+                return c.Status(200).JSON("todos")
         })
      
 app.Post("/api/todos", func(c *fiber.Ctx) error {
@@ -52,6 +52,10 @@ app.Patch("/api/todos/:id", func(c *fiber.Ctx) error {
         }
         return c.Status(404).JSON(fiber.Map{"error": "Todo not found"})
 })
+
+
+// Delete a todo
+
                         
  log.Fatal(app.Listen(":4000"))
 }
