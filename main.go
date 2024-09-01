@@ -29,6 +29,17 @@ app.Post("/api/todos", func(c *fiber.Ctx) error {
                 return err
         }
 
+        if todo.Body == "" {
+                return c.Status(400).JSON(fiber.Map{"error": "Todo body isrequired"})
+        }
+        todo.ID = len(todos) + 1
+        todos = append(todos, *todo)
+        eturn c.Status(201).JSON(todo)
+})
+ log.Fetal(app.Listen(":4000"))
+}
+
+
         todos = append(todos, *todo)
         return c.Status(201).JSON(todo)
 })
