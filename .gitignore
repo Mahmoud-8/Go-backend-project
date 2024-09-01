@@ -1,0 +1,16 @@
+.env
+
+node_modules
+dist
+# logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.s
+*.a
+*.o
+*.so
+*.so.*
+*.dylib
