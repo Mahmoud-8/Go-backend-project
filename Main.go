@@ -40,4 +40,15 @@ if err != nil {
 
 fmt.Println("Connected to MongoDB!")
 
+
+collection = client.Database("fiber-hrms").Collection("todos")
+app := fiber.New()
+// Get todos
+app.Get("/api/todos", getTodos)
+app.Post("/api/todos", createTodo)
+app.Patch("/api/todos/:id", updateTodo)
+app.Delete("/api/todos/:id", DeletTodo)
+
+
+
 }
