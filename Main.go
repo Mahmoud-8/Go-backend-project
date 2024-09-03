@@ -49,6 +49,12 @@ app.Post("/api/todos", createTodo)
 app.Patch("/api/todos/:id", updateTodo)
 app.Delete("/api/todos/:id", DeletTodo)
 
-
-
+port := os.Getenv("PORT")
+if port == "" {
+	port = "5000"
 }
+
+log.Fatal(app.Listen("0.0.0.0:", port))
+}
+
+
