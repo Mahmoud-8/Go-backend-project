@@ -1,15 +1,17 @@
 package main
 
-
 import (
-"fmt"
-"log"
-"os"
-"github.com/gofiber/fiber/v2"
-"context"
-go get go.mongodb.org/mongo-driver/mongo
-import "go.mongodb.org/mongo-driver/mongo/options"go get github.com/joho/godotenv
+	"context"
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
 type Todo struct {
 	ID        int    `json:"id"`
 	Completed bool   `json: "completed"`
@@ -31,6 +33,11 @@ if err != nil {
 	log.Fatal(err)
 }
 
-err := client.Ping(context.TODO(), nil)
+err = client.Ping(context.Background(), nil)
+if err != nil {
+	log.Fatal(err)
+}
+
+fmt.Println("Connected to MongoDB!")
 
 }
