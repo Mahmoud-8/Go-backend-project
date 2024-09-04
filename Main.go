@@ -57,4 +57,19 @@ if port == "" {
 log.Fatal(app.Listen("0.0.0.0:", port))
 }
 
+func getTodos(c *fiber.Ctx) error {
+	return c.JSON(todos)
+}
+func createTodo(c *fiber.Ctx) error {
+	todo := new(Todo)
+
+	if err := c.BodyParser(todo); err != nil {
+		return err
+}
+
+if todo.Body == "" {
+	return c.Status(400).JSON(fiber.Map{
+		"error": "Body is required",
+	})
+}
 
