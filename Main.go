@@ -21,44 +21,41 @@ type Todo struct {
 var collection *mongo.Collection
 
 func main() {
-fmt.Println("hello world") 
-err := godotenv.Load(".env")
-if err != nil {
-	log.Fatal("Error loading .env file")
-}
+	fmt.Println("hello world") 
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
-MONGODB_URI := os.Getenv("MONGODB_URI")
-client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(MONGODB_URI))
+	MONGODB_URI := os.Getenv("MONGODB_URI")
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(MONGODB_URI))
 
-if err != nil {
-	log.Fatal(err)
-}
+	if err != nil {
+		log.Fatal(err)
+	}
 
-err = client.Ping(context.Background(), nil)
-if err != nil {
-	log.Fatal(err)
-}
+	err = client.Ping(context.Background(), nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-fmt.Println("Connected to MongoDB!")
+	fmt.Println("Connected to MongoDB!")
 
+	collection = client.Database("fiber-hrms").Collection("todos")
+	app := fiber.New()
+	// Get todos
+	app.Get("/api/todos", getTodos)
+	app.Post("/api/todos", createTodo)
+	app.Patch("/api/todos/:id", updateTodo)
+	app.Delete("/api/todos/:id", DeletTodo)
 
-collection = client.Database("fiber-hrms").Collection("todos")
-app := fiber.New()
-// Get todos
-app.Get("/api/todos", getTodos)
-app.Post("/api/todos", createTodo)
-app.Patch("/api/todos/:id", updateTodo)
-app.Delete("/api/todos/:id", DeletTodo)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "5000"
+	}
 
-port := os.Getenv("PORT")
-if port == "" {
-	port = "5000"
-}
-
-log.Fatal(app.Listen("0.0.0.0:", port))
-}
-
-func getTodos(c *fiber.Ctx) error {
+	log.Fatal(app.Listen("0.0.0.0:" + port))
+} func getTodos(c *fiber.Ctx) error {
 	return c.JSON(todos)
 }
 func createTodo(c *fiber.Ctx) error {
