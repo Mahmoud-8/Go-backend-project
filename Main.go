@@ -8,12 +8,13 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Todo struct {
-	ID        int    `json:"id"`
+	ID        primitive.ObjectID    `json:"id,omitempty" bson:"_id,omitempty"`
 	Completed bool   `json: "completed"`
 	Body      string `"json: "body"`
 }
@@ -69,7 +70,15 @@ func createTodo(c *fiber.Ctx) error {
 
 if todo.Body == "" {
 	return c.Status(400).JSON(fiber.Map{
-		"error": "Body is required",
-	})
+		"error": "Body is required"	})
 }
 
+insertResult, err := collection.InsertOne(context.Background(), todo)
+if err != nil {
+	return err
+}
+
+todo.ID = int(insertResult.InsertedID.(primitive.ObjectID))
+return c.Status(201).JSON(todo)
+
+}
